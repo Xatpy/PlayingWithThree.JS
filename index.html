@@ -123,7 +123,7 @@ function init() {
     cameraBG.position.z = 50;
     sceneBG = new THREE.Scene();
 
-    var materialColor = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/starry_background.jpg"), depthTest: false });
+    var materialColor = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/starry_background.jpg"), depthTest: false });
     var bgPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), materialColor);
     bgPlane.position.z = -100;
     bgPlane.scale.set(window.innerWidth * 2, window.innerHeight * 2, 1);
@@ -156,10 +156,10 @@ function init() {
 
 function createEarthMaterial() {
     // 4096 is the maximum width for maps
-    var earthTexture = THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/earthmap4k.jpg");
-    var bumpMap = THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/earthbump4k.jpg");
-    var specularMap = THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/earthspec4k.jpg");
-    var normalMap = THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/earth_normalmap_flat4k.jpg");
+    var earthTexture = THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/earthmap4k.jpg");
+    var bumpMap = THREE.ImageUtils.loadTexture("hhttp://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/earthbump4k.jpg");
+    var specularMap = THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/earthspec4k.jpg");
+    var normalMap = THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/earth_normalmap_flat4k.jpg");
 
     var earthMaterial = new THREE.MeshPhongMaterial();
     earthMaterial.map = earthTexture;
@@ -232,7 +232,7 @@ function addCanvas() {
 }
 
 function createCloudMaterial() {
-    var cloudTexture = THREE.ImageUtils.loadTexture("https://raw.githubusercontent.com/Xatpy/PlayingWithThree.JS/gh-pages/assets/textures/planets/fair_clouds_4k.png");
+    var cloudTexture = THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/fair_clouds_4k.png");
 
     var cloudMaterial = new THREE.MeshPhongMaterial();
     cloudMaterial.map = cloudTexture;
