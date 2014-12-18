@@ -111,6 +111,8 @@ function init() {
         this.rotationSpeed = 0.001;
         this.ambientLightColor = ambientLight.color.getHex();
         this.directionalLightColor = directionalLight.color.getHex();
+        this.sqlQuery = 'jaime';
+        this.funcion = function () {console.log('hola');};
     };
 
     // add extras
@@ -250,6 +252,8 @@ function addControlGui(controlObject) {
     gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
     gui.addColor(controlObject, 'ambientLightColor');
     gui.addColor(controlObject, 'directionalLightColor');
+    gui.add(controlObject, 'sqlQuery');
+    gui.add(controlObject, 'funcion');
 }
 
 function addStatsObject() {
