@@ -247,8 +247,8 @@ function addControlGui(controlObject) {
     gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
     gui.addColor(controlObject, 'ambientLightColor');
     gui.addColor(controlObject, 'directionalLightColor');
-    gui.add(controlObject, 'sqlQuery');
-    gui.add(controlObject, 'funcion');
+    gui.add(controlObject, 'sqlQuery').name('Query to execute:');
+    gui.add(controlObject, 'funcion').name('Execute me!:');
 }
 
 function addStatsObject() {
