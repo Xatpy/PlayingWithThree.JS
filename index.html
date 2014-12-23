@@ -104,7 +104,7 @@ function init() {
     camera.lookAt(scene.position);
 
     // add controls
-    cameraControl = new THREE.OrbitControls(camera);
+    cameraControl = new THREE.OrbitControls(camera, renderer.domElement);
 
     // setup the control object for the control gui
     control = new function () {
