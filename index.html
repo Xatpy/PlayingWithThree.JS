@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>02.06 - Canvas overlay</title>
+    <title>CartoDB 3D</title>
     <script src="../libs/three.js"></script>
     <script src="../libs/OrbitControls.js"></script>
     <script src="../libs/dat.gui.min.js"></script>
@@ -39,8 +39,54 @@ var composer;
 var clock;
 var canvas;
 
+function newCanvas(points) {
+    canvas = document.createElement("canvas");
+    canvas.width=4096;
+    canvas.height=2048;
+
+    var context = canvas.getContext('2d');
+
+    for (var j = 0; j < points.length; ++j) {
+        var posX = points[j][0];
+        var posY = points[j][1];
+
+        var x2 =   ((4096/360.0) * (180 + posX));
+        var y2 =   ((2048/180.0) * (90 - posY));
+
+        context.beginPath();
+        context.arc(x2, y2, 4, 0, 2 * Math.PI, false);
+        context.fillStyle = 'red';
+        context.fill();
+
+        context.fill();
+        context.lineWidth = 2;
+        context.strokeStyle = '#003300';
+        context.stroke();
+    }
+
+
+    return canvas;
+}
+
+
 function getCartoDBData() {
-    
+    console.log(overlayMaterial.map);
+    console.log(control.sqlQuery); 
+    var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select ST_AsGeoJSON(the_geom) from strava_torque_cat';
+    $.getJSON( url, function (data) {
+        console.log(data);
+
+        debugger
+        var newPoints = [];
+
+        var pts = data.rows;
+        for (var i = 0; i < pts.length; ++i) {
+            var p = JSON.parse(pts[i].st_asgeojson);
+            newPoints.push(p.coordinates);
+        }
+
+        overlayMaterial.map = new THREE.Texture(newCanvas(newPoints));
+    })
 }
 
 /**
@@ -72,7 +118,8 @@ function init() {
 
     // create overlay
     var overlayGeometry = new THREE.SphereGeometry(15, 60, 60);
-    var overlayMaterial = createOverlayMaterial();
+    //var overlayMaterial = createOverlayMaterial();
+    overlayMaterial = createOverlayMaterial(); //global variable
     var overlayMesh = new THREE.Mesh(overlayGeometry, overlayMaterial);
     overlayMesh.name= 'overlay';
     scene.add(overlayMesh);
@@ -104,7 +151,7 @@ function init() {
     camera.lookAt(scene.position);
 
     // add controls
-    cameraControl = new THREE.OrbitControls(camera);
+    cameraControl = new THREE.OrbitControls(camera, renderer.domElement);
 
     // setup the control object for the control gui
     control = new function () {
@@ -112,7 +159,8 @@ function init() {
         this.ambientLightColor = ambientLight.color.getHex();
         this.directionalLightColor = directionalLight.color.getHex();
         this.sqlQuery = 'jaime';
-        this.funcion = function () {console.log('hola');};
+        //this.funcion = function () {console.log('hola');};
+        this.funcion = function (){getCartoDBData();};
     };
 
     // add extras
@@ -248,7 +296,7 @@ function addControlGui(controlObject) {
     gui.addColor(controlObject, 'ambientLightColor');
     gui.addColor(controlObject, 'directionalLightColor');
     gui.add(controlObject, 'sqlQuery').name('Query to execute:');
-    gui.add(controlObject, 'funcion').name('Execute me!:');
+    gui.add(controlObject, 'funcion').name('Execute SQL:');
 }
 
 function addStatsObject() {
