@@ -64,7 +64,6 @@ function newCanvas(points) {
         context.stroke();
     }
 
-
     return canvas;
 }
 
@@ -72,21 +71,29 @@ function newCanvas(points) {
 function getCartoDBData() {
     console.log(overlayMaterial.map);
     console.log(control.sqlQuery); 
-    var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select ST_AsGeoJSON(the_geom) from strava_torque_cat';
+    //var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select ST_AsGeoJSON(the_geom) from strava_torque_cat';
+    var url = 'http://xatpy.cartodb.com/api/v2/sql?q='
+    var query = control.sqlQuery;
+
+    url += query;
+
     $.getJSON( url, function (data) {
         console.log(data);
 
-        debugger
-        var newPoints = [];
+        var newPoints = parseDataPoints(data);
 
         var pts = data.rows;
         for (var i = 0; i < pts.length; ++i) {
             var p = JSON.parse(pts[i].st_asgeojson);
-            newPoints.push(p.coordinates);
+            if ((p) && (p.coordinates) ) {
+                newPoints.push(p.coordinates);
+            }
         }
 
         overlayMaterial.map = new THREE.Texture(newCanvas(newPoints));
     })
+    .done( function() {console.log('done');})
+    .error( function() {console.log('error');})
 }
 
 /**
@@ -158,7 +165,7 @@ function init() {
         this.rotationSpeed = 0.001;
         this.ambientLightColor = ambientLight.color.getHex();
         this.directionalLightColor = directionalLight.color.getHex();
-        this.sqlQuery = 'jaime';
+        this.sqlQuery = 'SELECT ST_AsGeoJSON(the_geom) FROM strava_torque_cat';
         //this.funcion = function () {console.log('hola');};
         this.funcion = function (){getCartoDBData();};
     };
@@ -227,13 +234,32 @@ function createEarthMaterial() {
 
 function createOverlayMaterial() {
     var olMaterial = new THREE.MeshPhongMaterial();
-    olMaterial.map = new THREE.Texture(addCanvas());
+    var urlDefault = 'http://xatpy.cartodb.com/api/v2/sql?q=select%20ST_AsGeoJSON(the_geom)%20from%20populated_places';
+    olMaterial.map = new THREE.Texture(addCanvas(urlDefault));
     olMaterial.transparent = true;
     olMaterial.opacity = 0.6;
     return olMaterial;
 }
 
-function addCanvas() {
+/*
+This functions parses from data received from CartoDB API
+and create an array
+*/
+function parseDataPoints(data) {
+    var points = [];
+
+    var pts = data.rows;
+    for (var i = 0; i < pts.length; ++i) {
+        var p = JSON.parse(pts[i].st_asgeojson);
+        if ((p) && (p.coordinates) ) {
+            points.push(p.coordinates);
+        }
+    }
+
+    return points;
+}
+
+function addCanvas(url) {
 
     canvas = document.createElement("canvas");
     canvas.width=4096;
@@ -242,18 +268,12 @@ function addCanvas() {
     var context = canvas.getContext('2d');
 
 
-    var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select%20ST_AsGeoJSON(the_geom)%20from%20populated_places';
+    //var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select%20ST_AsGeoJSON(the_geom)%20from%20populated_places';
     $.getJSON( url, function (data) {
 
     })
     .done(function (data) {
-        var points = [];
-
-        var pts = data.rows;
-        for (var i = 0; i < pts.length; ++i) {
-            var p = JSON.parse(pts[i].st_asgeojson);
-            points.push(p.coordinates);
-        }
+        var points = parseDataPoints(data);
 
         for (var j = 0; j < points.length; ++j) {
             var posX = points[j][0];
@@ -272,7 +292,6 @@ function addCanvas() {
             context.strokeStyle = '#003300';
             context.stroke();
         }
-
     });
 
     return canvas;
@@ -310,13 +329,11 @@ function addStatsObject() {
     document.body.appendChild(stats.domElement);
 }
 
-
 /**
  * Called when the scene needs to be rendered. Delegates to requestAnimationFrame
  * for future renders
  */
 function render() {
-
     scene.getObjectByName('overlay').material.map.needsUpdate = true;
 
     // update stats
@@ -342,7 +359,6 @@ function render() {
     requestAnimationFrame(render);
 }
 
-
 /**
  * Function handles the resize event. This make sure the camera and the renderer
  * are updated at the correct moment.
@@ -359,6 +375,7 @@ window.onload = init;
 window.addEventListener('resize', handleResize, false);
 
 </script>
+
 <body>
 </body>
 </html>
