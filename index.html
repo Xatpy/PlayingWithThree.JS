@@ -313,11 +313,16 @@ function createCloudMaterial() {
 
 function addControlGui(controlObject) {
     var gui = new dat.GUI();
-    gui.add(controlObject, 'rotationSpeed', -0.01, 0.01);
-    gui.addColor(controlObject, 'ambientLightColor');
-    gui.addColor(controlObject, 'directionalLightColor');
-    gui.add(controlObject, 'sqlQuery').name('Query to execute:');
-    gui.add(controlObject, 'funcion').name('Execute SQL:');
+    var folderLight = gui.addFolder('Light');
+    folderLight.add(controlObject, 'rotationSpeed', -0.01, 0.01);
+    folderLight.addColor(controlObject, 'ambientLightColor');
+    folderLight.addColor(controlObject, 'directionalLightColor');
+    var folderSQL = gui.addFolder('SQL');
+    folderSQL.add(controlObject, 'sqlQuery').name('Query to execute:');
+    folderSQL.add(controlObject, 'funcion').name('Execute SQL:');
+    var folderExamples = gui.addFolder('CartoDB examples');
+    //folderExamples.add(controlObject, 'sqlQuery').name('Query to execute:');
+    //folderExamples.add(controlObject, 'sqlQuery').name('Query to execute:');
 }
 
 function addStatsObject() {
