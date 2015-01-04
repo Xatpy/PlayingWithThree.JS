@@ -1,7 +1,7 @@
 # PlayingWithThree.JS
-===================
+=
 
-# Carto3Db
+# carto3Db
 
 ## Description
 
