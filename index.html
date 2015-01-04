@@ -67,13 +67,13 @@ function newCanvas(points) {
     return canvas;
 }
 
-
-function getCartoDBData() {
+//Param. Url given by example
+function getCartoDBData(param) {
     console.log(overlayMaterial.map);
     console.log(control.sqlQuery); 
     //var url = 'http://xatpy.cartodb.com/api/v2/sql?q=select ST_AsGeoJSON(the_geom) from strava_torque_cat';
     var url = 'http://xatpy.cartodb.com/api/v2/sql?q='
-    var query = control.sqlQuery;
+    var query = (param ? param : control.sqlQuery);
 
     url += query;
 
@@ -167,7 +167,10 @@ function init() {
         this.directionalLightColor = directionalLight.color.getHex();
         this.sqlQuery = 'SELECT ST_AsGeoJSON(the_geom) FROM strava_torque_cat';
         //this.funcion = function () {console.log('hola');};
-        this.funcion = function (){getCartoDBData();};
+        this.executeSQL    = function () { getCartoDBData();};
+        this.example_airports  = function () { getCartoDBData('select ST_AsGeoJSON(the_geom) from ne_10m_airports')};
+        this.example_seaports  = function () { getCartoDBData('select ST_AsGeoJSON(the_geom) from ne_10m_ports')};
+        this.example_populated_places  = function () { getCartoDBData('select ST_AsGeoJSON(the_geom) from populated_places')};
     };
 
     // add extras
@@ -180,7 +183,8 @@ function init() {
     cameraBG.position.z = 50;
     sceneBG = new THREE.Scene();
 
-    var materialColor = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("../assets/textures/planets/starry_background.jpg"), depthTest: false });
+    THREE.ImageUtils.crossOrigin = '';
+    var materialColor = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/assets/textures/planets/starry_background.jpg"), depthTest: false });
     var bgPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), materialColor);
     bgPlane.position.z = -100;
     bgPlane.scale.set(window.innerWidth * 2, window.innerHeight * 2, 1);
@@ -212,6 +216,7 @@ function init() {
 
 
 function createEarthMaterial() {
+    THREE.ImageUtils.crossOrigin = '';
     // 4096 is the maximum width for maps
     var earthTexture = THREE.ImageUtils.loadTexture("../assets/textures/planets/earthmap4k.jpg");
     var bumpMap = THREE.ImageUtils.loadTexture("../assets/textures/planets/earthbump4k.jpg");
@@ -317,10 +322,11 @@ function addControlGui(controlObject) {
     folderLight.addColor(controlObject, 'directionalLightColor');
     var folderSQL = gui.addFolder('SQL');
     folderSQL.add(controlObject, 'sqlQuery').name('Query to execute:');
-    folderSQL.add(controlObject, 'funcion').name('Execute SQL:');
+    folderSQL.add(controlObject, 'executeSQL').name('Execute SQL:');
     var folderExamples = gui.addFolder('CartoDB examples');
-    //folderExamples.add(controlObject, 'sqlQuery').name('Query to execute:');
-    //folderExamples.add(controlObject, 'sqlQuery').name('Query to execute:');
+    folderExamples.add(controlObject, 'example_airports').name('World airports');
+    folderExamples.add(controlObject, 'example_seaports').name('Seaports');
+    folderExamples.add(controlObject, 'example_populated_places').name('Populated places');
 }
 
 function addStatsObject() {
