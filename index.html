@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CartoDB 3D</title>
+    <title>Carto3Db_globe</title>
     <script src="http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/libs/three.js"></script>
     <script src="http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/libs/OrbitControls.js"></script>
     <script src="http://cdn.rawgit.com/Xatpy/PlayingWithThree.JS/master/libs/dat.gui.min.js"></script>
@@ -321,7 +321,7 @@ function addControlGui(controlObject) {
     folderLight.addColor(controlObject, 'ambientLightColor');
     folderLight.addColor(controlObject, 'directionalLightColor');
     var folderSQL = gui.addFolder('SQL');
-    folderSQL.add(controlObject, 'sqlQuery').name('Query to execute:');
+    folderSQL.add(controlObject, 'sqlQuery').name('Query');
     folderSQL.add(controlObject, 'executeSQL').name('Execute SQL:');
     var folderExamples = gui.addFolder('CartoDB examples');
     folderExamples.add(controlObject, 'example_airports').name('World airports');
