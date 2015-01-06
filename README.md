@@ -5,6 +5,9 @@
 
 You can set your own query (points dataset) in the SQL section->*Query* and clicking on *Execute SQL*.
 
+## Web
+http://xatpy.github.io/PlayingWithThree.JS/
+
 ### SQL query example
 > **SELECT ST_AsGeoJSON(the_geom) FROM {{table}}**
 
@@ -17,6 +20,4 @@ Examples by default
 
 ## Image
 ![ScreenShot](assets/snap.png)
-
-## Web
-http://xatpy.github.io/PlayingWithThree.JS/
+![gif](assets/carto3Db_globe.gif)
