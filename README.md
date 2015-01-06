@@ -11,7 +11,7 @@ http://xatpy.github.io/PlayingWithThree.JS/
 ### SQL query example
 > **SELECT ST_AsGeoJSON(the_geom) FROM {{table}}**
 
-Examples by default
+Default examples:
 > select ST_AsGeoJSON(the_geom) from populated_places
 
 > select ST_AsGeoJSON(the_geom) from ne_10m_ports
