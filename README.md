@@ -24,3 +24,6 @@ Default examples:
 ## Image
 ![ScreenShot](assets/snap.png)
 ![gif](assets/carto3Db_globe.gif)
+
+## TODO
+- Select points color
