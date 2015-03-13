@@ -11,7 +11,7 @@
 
 	<body>
 		<script src="three.min.js"></script>
-		<script src="https://dl.dropboxusercontent.com/u/3587259/Code/Threejs/OrbitControls.js"></script>
+		<script src="OrbitControls.js"></script>
 
 		<script>
 			//Setting three.js
@@ -21,7 +21,6 @@
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
-
 
 			function paintLine(points, elev, color) {
 				var materialLine = new THREE.LineBasicMaterial({
@@ -105,20 +104,18 @@
 			camera.position.y = 0;
 			camera.position.z = -10;
 
-			//loadSpain();
+			loadSpain();
 
-			getCartoDBData();
+			//getCartoDBData();
 
-			var controls = new THREE.OrbitControls( camera );
-			controls.damping = 0.2;
-			controls.addEventListener( 'change', render );
+		 	controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 
 		    //Render
 			var render = function () {
 				requestAnimationFrame( render );	
-		controls.update();
 				renderer.render(scene, camera);
+      			controls.update();
 			};
 			console.log('A PINTAR')
 			render();
